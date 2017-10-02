@@ -25,3 +25,6 @@ print a;
 print a+3;
 a = a+1;
 print a;
+b:1;
+b?;
+print b;
