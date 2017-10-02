@@ -2,10 +2,14 @@
 if 0 then
 	print 1234;
 else
-	print 4321;
+	if 1 then
+		print 4321;
+	else
+		print 7890;
+	end
 end
 i:1;
-i=10;
+i=5;
 while i then
 	print i;
 	i =  i - 1;

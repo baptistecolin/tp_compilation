@@ -58,24 +58,32 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
   | assign:i {: RESULT = i; :}
   | TK_IF expr:e1 TK_THEN linst:l1 TK_ELSE linst:l2 TK_END
     {:
+      String labelse = new String("labelse"+labelCount);
+      String labfin = new String("labfin"+labelCount);
+      labelCount++;
+
       RESULT = e1
-              +make_inst("","BEZ","labelse")
+              +make_inst("","BEZ",labelse)
               +l1
-              +make_inst("","PUSH","labfin")
+              +make_inst("","PUSH",labfin)
               +make_inst("","GOTO","")
-              +make_inst("labelse","EQU","*")
+              +make_inst(labelse,"EQU","*")
               +l2
-              +make_inst("labfin","EQU","*");
+              +make_inst(labfin,"EQU","*");
     :}
   | TK_WHILE expr:e1 TK_THEN linst:l1 TK_END
     {:
-      RESULT = make_inst("labbefore","EQU","*")
+      String labbefore = new String("labbefore"+labelCount);
+      String labout = new String("labout"+labelCount);
+      labelCount++;
+
+      RESULT = make_inst(labbefore,"EQU","*")
               + e1
-              +make_inst("","BEZ","labout")
+              +make_inst("","BEZ",labout)
               + l1
-              +make_inst("","PUSH","labbefore")
+              +make_inst("","PUSH",labbefore)
               +make_inst("","GOTO","")
-              +make_inst("labout","EQU","*");
+              +make_inst(labout,"EQU","*");
     :}
 	;
 
