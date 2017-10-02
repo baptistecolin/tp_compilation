@@ -9,3 +9,8 @@ print 6-2+1;
 print 6+2-1;
 print (5);
 print (3+5);
+print 2*3;
+print 4/2;
+print 5/2;
+print 1+3*2;
+print (1+3)*2;

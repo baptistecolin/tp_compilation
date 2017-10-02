@@ -22,6 +22,7 @@ action code {:
 
 terminal TK_SEP, TK_PRINT;
 terminal TK_PLUS, TK_MINUS;
+terminal TK_MULT, TK_DIV;
 terminal TK_BRALEF, TK_BRARIG;
 terminal Integer TK_ICNST;
 
@@ -30,6 +31,7 @@ non terminal String program, linst, inst, print, expr;
 
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
+precedence left TK_MULT, TK_DIV;
 precedence left TK_BRALEF;
 precedence right TK_BRARIG;
 
@@ -40,26 +42,38 @@ target ::= program:s {: System.out.println(s); :}
 
 program ::= linst:l {: RESULT = l + "\tSTOP\n"; :}
   ;
+
 linst ::= inst:i {: RESULT = i; :}
   | linst:l inst:i {: RESULT = l + i; :}
   ;
+
 inst  ::= print:i TK_SEP {: RESULT = i; :}
 	| TK_SEP {: RESULT = ""; :}
 	;
+
 print ::= TK_PRINT expr:e
         {:
 	    String comment = make_comm("print...");
 	    RESULT = comment + e + "\tOUT\n";
 	:}
 	;
+
 expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
 	| expr:e1 TK_PLUS expr:e2 
     {: 
-      RESULT = e1 + e2 +"\tADD\t\n";
+      RESULT = e1 + e2 + "\tADD\t\n";
     :}
   | expr:e1 TK_MINUS expr:e2
     {:
-      RESULT = e1 + e2 +"\tSUB\t\n";
+      RESULT = e1 + e2 + "\tSUB\t\n";
+    :}
+  | expr:e1 TK_MULT expr:e2
+    {:
+      RESULT = e1 + e2 + "\tMUL\t\n";
+    :}
+  | expr:e1 TK_DIV expr:e2
+    {:
+      RESULT = e1 + e2 + "\tDIV\t\n";
     :}
   | TK_BRALEF expr:e1 TK_BRARIG
     {:
