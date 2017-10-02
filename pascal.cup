@@ -10,7 +10,7 @@ parser code {:
 
 action code {:
   // attributes & methods seen from actions
-  int labelcount = 0;
+  int labelCount = 0;
 
   String make_inst(String lab, String op, String arg) {
     return lab + "\t" + op + "\t" + arg + "\n";
@@ -169,9 +169,9 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
     :}
   | expr:e1 TK_EQ expr:e2
     {:
-      String nonzero = new String("nonzero" + labelcount);
-      String labfin = new String("labfin" + labelcount);
-      labelcount++;
+      String nonzero = new String("nonzero" + labelCount);
+      String labfin = new String("labfin" + labelCount);
+      labelCount++;
 
       RESULT = e1
               +e2
@@ -183,5 +183,39 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
               +make_inst(nonzero,"EQU","*")
               +make_inst("","PUSH","1")
               +make_inst(labfin,"EQU","*");
+    :}
+  | expr:e1 TK_INF expr:e2
+    {:
+      String greaterThanZero = new String("greaterThanZero" + labelCount);
+      String labFin = new String("labfin" + labelCount);
+      labelCount++;
+
+      RESULT = e2
+              +e1
+              +make_inst("","SUB","")
+              +make_inst("","BGZ",greaterThanZero)
+              +make_inst("","PUSH","0")
+              +make_inst("","PUSH",labFin)
+              +make_inst("","GOTO","")
+              +make_inst(greaterThanZero,"EQU","*")
+              +make_inst("","PUSH","1")
+              +make_inst(labFin,"EQU","*");
+    :}
+  | expr:e1 TK_SUP expr:e2
+    {:
+      String lowerThanZero = new String("lowerThanZero" + labelCount);
+      String labFin = new String("labfin" + labelCount);
+      labelCount++;
+
+      RESULT = e1
+              +e2
+              +make_inst("","SUB","")
+              +make_inst("","BGZ",lowerThanZero)
+              +make_inst("","PUSH","0")
+              +make_inst("","PUSH",labFin)
+              +make_inst("","GOTO","")
+              +make_inst(lowerThanZero,"EQU","*")
+              +make_inst("","PUSH","1")
+              +make_inst(labFin,"EQU","*");
     :}
   ;
