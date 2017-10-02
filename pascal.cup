@@ -10,6 +10,7 @@ parser code {:
 
 action code {:
   // attributes & methods seen from actions
+  int labelcount = 0;
 
   String make_inst(String lab, String op, String arg) {
     return lab + "\t" + op + "\t" + arg + "\n";
@@ -23,7 +24,7 @@ action code {:
 terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
 terminal TK_MULT, TK_DIV, TK_MODULO;
-terminal TK_MOINS;
+terminal TK_MOINS, TK_EQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
 terminal Integer TK_ICNST, TK_INPUT;
@@ -35,6 +36,7 @@ non terminal String program, linst, inst, print, assign, declaration, expr;
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV, TK_MODULO;
+precedence left TK_MOINS, TK_EQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 precedence left TK_BRALEF, TK_CROCHOP;
 precedence right TK_BRARIG, TK_CROCHCL;
 
@@ -164,5 +166,22 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
               +"\tDIV\t\n"
               +"\tMUL\t\n"
               +"\tSUB\t\n";
+    :}
+  | expr:e1 TK_EQ expr:e2
+    {:
+      String nonzero = new String("nonzero" + labelcount);
+      String labfin = new String("labfin" + labelcount);
+      labelcount++;
+
+      RESULT = e1
+              +e2
+              +make_inst("","SUB","")
+              +make_inst("","BEZ",nonzero)
+              +make_inst("","PUSH","0")
+              +make_inst("","PUSH",labfin)
+              +make_inst("","GOTO","")
+              +make_inst(nonzero,"EQU","*")
+              +make_inst("","PUSH","1")
+              +make_inst(labfin,"EQU","*");
     :}
   ;

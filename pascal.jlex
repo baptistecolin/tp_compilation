@@ -17,6 +17,11 @@ ICNST = [0-9]+
 ")"		{ return new Symbol(sym.TK_BRARIG);}
 "["		{ return new Symbol(sym.TK_CROCHOP);}
 "]"		{ return new Symbol(sym.TK_CROCHCL);}
+"=="	{ return new Symbol(sym.TK_EQ);}
+">="	{ return new Symbol(sym.TK_SUPEQ);}
+">"		{ return new Symbol(sym.TK_SUP);}
+"<="	{ return new Symbol(sym.TK_INFEQ);}
+"<"		{ return new Symbol(sym.TK_INF);}
 "+"		{ return new Symbol(sym.TK_PLUS);}
 "-"		{ return new Symbol(sym.TK_MINUS);}
 "*"		{ return new Symbol(sym.TK_MULT);}
