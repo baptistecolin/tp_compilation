@@ -5,11 +5,14 @@ import java_cup.runtime.Symbol;
 %column
 %cup
 %standalone
+%state COMMENT
+%state COMMENTZONE
+
 
 ICNST = [0-9]+
 
 %%
-
+<YYINITIAL> {
 "("		{ return new Symbol(sym.TK_BRALEF);}
 ")"		{ return new Symbol(sym.TK_BRARIG);}
 "+"		{ return new Symbol(sym.TK_PLUS);}
@@ -18,8 +21,20 @@ ICNST = [0-9]+
 "/"		{ return new Symbol(sym.TK_DIV);}
 "print"		{ return new Symbol(sym.TK_PRINT);}
 ";"		{ return new Symbol(sym.TK_SEP);}
+"#"		{ yybegin(COMMENT);}
+"/*"	{ yybegin(COMMENTZONE);}
 {ICNST}		{ return new Symbol(sym.TK_ICNST, new Integer(yytext())); }
 [\ \t\n\r\f]	{ }
 .		{ System.err.println("unexpected char '" + yytext() +
 				     "' line " + yyline);
                   return new Symbol(sym.error); }
+}
+
+<COMMENT> {
+	"\n" { yybegin(YYINITIAL);}
+	.	 { }
+}
+<COMMENTZONE> {
+	"*/" { yybegin(YYINITIAL);}
+	.	 { }
+}

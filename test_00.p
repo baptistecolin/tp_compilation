@@ -14,3 +14,8 @@ print 4/2;
 print 5/2;
 print 1+3*2;
 print (1+3)*2;
+print 4; # commentaire
+print 5; /* commentaire
+commentaire2
+commentaire3
+commentaire 4*/ print 6;
