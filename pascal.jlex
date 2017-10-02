@@ -25,6 +25,7 @@ ICNST = [0-9]+
 "+"		{ return new Symbol(sym.TK_PLUS);}
 "-"		{ return new Symbol(sym.TK_MINUS);}
 "*"		{ return new Symbol(sym.TK_MULT);}
+"!="	{ return new Symbol(sym.TK_INEQ);}
 "="		{ return new Symbol(sym.TK_ASSIGN);}
 "/"		{ return new Symbol(sym.TK_DIV);}
 "%"		{ return new Symbol(sym.TK_MODULO);}
