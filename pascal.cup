@@ -23,7 +23,7 @@ action code {:
 terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
 terminal TK_MULT, TK_DIV;
-terminal TK_BRALEF, TK_BRARIG;
+terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
 terminal Integer TK_ICNST, TK_INPUT;
 terminal String TK_VAR;
@@ -34,8 +34,8 @@ non terminal String program, linst, inst, print, assign, declaration, expr;
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV;
-precedence left TK_BRALEF;
-precedence right TK_BRARIG;
+precedence left TK_BRALEF, TK_CROCHOP;
+precedence right TK_BRARIG, TK_CROCHCL;
 
 start with target;
 
@@ -105,12 +105,29 @@ assign ::= TK_VAR:x TK_ASSIGN expr:e1
             +"\tIN\t\n"
             +"\tSTORE\t\n";
   :}
+  | TK_VAR:x TK_CROCHOP expr:e1 TK_CROCHCL TK_ASSIGN expr:e2
+    {:
+      String comment = make_comm("assigning to an array...");
+      RESULT = comment
+              +"\tPUSH\t" + x + "\n"
+              + e1
+              +"\tADD\t\n"
+              + e2
+              +"\tSTORE\t\n";
+    :}
   ;
 
 expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
   | TK_VAR:x
     {:
       RESULT = "\tPUSH\t" + x + "\n"
+              +"\tLOAD\t\n";
+    :}
+  | TK_VAR:x TK_CROCHOP expr:e TK_CROCHCL
+    {:
+      RESULT = "\tPUSH\t" + x + "\n"
+              + e
+              +"\tADD\t\n"
               +"\tLOAD\t\n";
     :}
   | expr:e1 TK_PLUS expr:e2 

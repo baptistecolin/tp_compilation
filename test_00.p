@@ -26,8 +26,6 @@ print a+3;
 a = a+1;
 print a;
 b:1;
-#b?;
-print b;
 if 0 then
 	print 1234;
 else
@@ -39,3 +37,7 @@ while i then
 	print i;
 	i =  i - 1;
 end
+
+t:2;
+t[1]=5;
+print t[1];
