@@ -23,6 +23,7 @@ action code {:
 terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
 terminal TK_MULT, TK_DIV;
+terminal TK_MOINS;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
 terminal Integer TK_ICNST, TK_INPUT;
@@ -149,5 +150,11 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
   | TK_BRALEF expr:e1 TK_BRARIG
     {:
       RESULT = e1;
+    :}
+  | TK_MOINS expr:e
+    {:
+      RESULT = "\tPUSH\t0\n"
+              + e
+              +"\tSUB\t\n";
     :}
   ;
