@@ -26,5 +26,12 @@ print a+3;
 a = a+1;
 print a;
 b:1;
-b?;
+#b?;
 print b;
+if 0 then
+	print 1234;
+else
+	print 4321;
+end
+
+

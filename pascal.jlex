@@ -23,6 +23,10 @@ ICNST = [0-9]+
 ":"		{ return new Symbol(sym.TK_DECLARE);}
 "?"		{ return new Symbol(sym.TK_INPUT);}
 "print"		{ return new Symbol(sym.TK_PRINT);}
+"if"		{ return new Symbol(sym.TK_IF);}
+"then"		{ return new Symbol(sym.TK_THEN);}
+"else"		{ return new Symbol(sym.TK_ELSE);}
+"end"		{ return new Symbol(sym.TK_END);}
 ";"		{ return new Symbol(sym.TK_SEP);}
 "#"		{ yybegin(COMMENT);}
 "/*"	{ yybegin(COMMENTZONE);}

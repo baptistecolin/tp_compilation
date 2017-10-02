@@ -24,6 +24,7 @@ terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
 terminal TK_MULT, TK_DIV;
 terminal TK_BRALEF, TK_BRARIG;
+terminal TK_IF, TK_THEN, TK_ELSE, TK_END;
 terminal Integer TK_ICNST, TK_INPUT;
 terminal String TK_VAR;
 
@@ -52,6 +53,17 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
 	| TK_SEP {: RESULT = ""; :}
   | declaration:i {: RESULT = i; :}
   | assign:i {: RESULT = i; :}
+  | TK_IF expr:e1 TK_THEN linst:l1 TK_ELSE linst:l2 TK_END
+    {:
+      RESULT = e1
+              + "\tBEZ\t labelse\n"
+              + l1
+              +"\tPUSH labfin\n"
+              +"\tGOTO\n"
+              +"labelse\t EQU * \n"
+              + l2
+              +"labfin\t EQU *\n";
+    :}
 	;
 
 print ::= TK_PRINT expr:e
