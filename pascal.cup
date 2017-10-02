@@ -59,23 +59,23 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
   | TK_IF expr:e1 TK_THEN linst:l1 TK_ELSE linst:l2 TK_END
     {:
       RESULT = e1
-              + "\tBEZ\t labelse\n"
-              + l1
-              +"\tPUSH labfin\n"
-              +"\tGOTO\n"
-              +"labelse\t EQU * \n"
-              + l2
-              +"labfin\t EQU *\n";
+              +make_inst("","BEZ","labelse")
+              +l1
+              +make_inst("","PUSH","labfin")
+              +make_inst("","GOTO","")
+              +make_inst("labelse","EQU","*")
+              +l2
+              +make_inst("labfin","EQU","*");
     :}
   | TK_WHILE expr:e1 TK_THEN linst:l1 TK_END
     {:
-      RESULT = "labbefore\t EQU *\n"
+      RESULT = make_inst("labbefore","EQU","*")
               + e1
-              +"\tBEZ\t labout\n"
+              +make_inst("","BEZ","labout")
               + l1
-              +"\tPUSH\t labbefore\n"
-              +"\tGOTO\n"
-              +"labout\t EQU *\n";
+              +make_inst("","PUSH","labbefore")
+              +make_inst("","GOTO","")
+              +make_inst("labout","EQU","*");
     :}
 	;
 
@@ -96,58 +96,58 @@ assign ::= TK_VAR:x TK_ASSIGN expr:e1
   {:
     String comment = make_comm("assigning...");
     RESULT = comment
-            +"\tPUSH\t" + x + "\n"
+            +make_inst("","PUSH",x)
             + e1
-            +"\tSTORE\t\n";
+            +make_inst("","STORE","");
   :}
   | TK_VAR:x TK_INPUT
   {:
     String comment = make_comm("assigning by input...");
     RESULT = comment
-            +"\tPUSH\t" + x + "\n"
-            +"\tIN\t\n"
-            +"\tSTORE\t\n";
+            +make_inst("","PUSH",x)
+            +make_inst("","IN","")
+            +make_inst("","STORE","");
   :}
   | TK_VAR:x TK_CROCHOP expr:e1 TK_CROCHCL TK_ASSIGN expr:e2
     {:
       String comment = make_comm("assigning to an array...");
       RESULT = comment
-              +"\tPUSH\t" + x + "\n"
+              +make_inst("","PUSH",x)
               + e1
-              +"\tADD\t\n"
+              +make_inst("","ADD","")
               + e2
-              +"\tSTORE\t\n";
+              +make_inst("","STORE","");
     :}
   ;
 
 expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
   | TK_VAR:x
     {:
-      RESULT = "\tPUSH\t" + x + "\n"
-              +"\tLOAD\t\n";
+      RESULT = make_inst("","PUSH",x)
+              +make_inst("","LOAD","");
     :}
   | TK_VAR:x TK_CROCHOP expr:e TK_CROCHCL
     {:
-      RESULT = "\tPUSH\t" + x + "\n"
+      RESULT = make_inst("","PUSH",x)
               + e
-              +"\tADD\t\n"
-              +"\tLOAD\t\n";
+              +make_inst("","ADD","")
+              +make_inst("","LOAD","");
     :}
   | expr:e1 TK_PLUS expr:e2 
     {: 
-      RESULT = e1 + e2 + "\tADD\t\n";
+      RESULT = e1 + e2 + make_inst("","ADD","");
     :}
   | expr:e1 TK_MINUS expr:e2
     {:
-      RESULT = e1 + e2 + "\tSUB\t\n";
+      RESULT = e1 + e2 + make_inst("","SUB","");
     :}
   | expr:e1 TK_MULT expr:e2
     {:
-      RESULT = e1 + e2 + "\tMUL\t\n";
+      RESULT = e1 + e2 + make_inst("","MUL","");
     :}
   | expr:e1 TK_DIV expr:e2
     {:
-      RESULT = e1 + e2 + "\tDIV\t\n";
+      RESULT = e1 + e2 + make_inst("","DIV","");
     :}
   | TK_BRALEF expr:e1 TK_BRARIG
     {:
@@ -155,17 +155,17 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
     :}
   | TK_MOINS expr:e
     {:
-      RESULT = "\tPUSH\t0\n"
+      RESULT = make_inst("","PUSH","0")
               + e
-              +"\tSUB\t\n";
+              +make_inst("","SUB","");
     :}
   | expr:e1 TK_MODULO expr:e2
     {:
       // a%b = a - (a/b)*b
       RESULT = e1 + e2 + e1 + e2
-              +"\tDIV\t\n"
-              +"\tMUL\t\n"
-              +"\tSUB\t\n";
+              +make_inst("","DIV","")
+              +make_inst("","MUL","")
+              +make_inst("","SUB","");
     :}
   | expr:e1 TK_EQ expr:e2
     {:
