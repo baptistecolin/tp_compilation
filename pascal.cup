@@ -22,6 +22,7 @@ action code {:
 
 terminal TK_SEP, TK_PRINT;
 terminal TK_PLUS, TK_MINUS;
+terminal TK_BRALEF, TK_BRARIG;
 terminal Integer TK_ICNST;
 
 non terminal target;
@@ -29,6 +30,8 @@ non terminal String program, linst, inst, print, expr;
 
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
+precedence left TK_BRALEF;
+precedence right TK_BRARIG;
 
 start with target;
 
@@ -57,5 +60,9 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
   | expr:e1 TK_MINUS expr:e2
     {:
       RESULT = e1 + e2 +"\tSUB\t\n";
+    :}
+  | TK_BRALEF expr:e1 TK_BRARIG
+    {:
+      RESULT = e1;
     :}
   ;

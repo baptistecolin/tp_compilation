@@ -10,6 +10,8 @@ ICNST = [0-9]+
 
 %%
 
+"("		{ return new Symbol(sym.TK_BRALEF);}
+")"		{ return new Symbol(sym.TK_BRARIG);}
 "+"		{ return new Symbol(sym.TK_PLUS);}
 "-"		{ return new Symbol(sym.TK_MINUS);}
 "print"		{ return new Symbol(sym.TK_PRINT);}

@@ -7,3 +7,5 @@ print 2-1;
 print 6-2-1;
 print 6-2+1;
 print 6+2-1;
+print (5);
+print (3+5);
