@@ -26,6 +26,7 @@ ICNST = [0-9]+
 "if"		{ return new Symbol(sym.TK_IF);}
 "then"		{ return new Symbol(sym.TK_THEN);}
 "else"		{ return new Symbol(sym.TK_ELSE);}
+"while"		{ return new Symbol(sym.TK_WHILE);}
 "end"		{ return new Symbol(sym.TK_END);}
 ";"		{ return new Symbol(sym.TK_SEP);}
 "#"		{ yybegin(COMMENT);}

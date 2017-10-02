@@ -24,7 +24,7 @@ terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
 terminal TK_MULT, TK_DIV;
 terminal TK_BRALEF, TK_BRARIG;
-terminal TK_IF, TK_THEN, TK_ELSE, TK_END;
+terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
 terminal Integer TK_ICNST, TK_INPUT;
 terminal String TK_VAR;
 
@@ -63,6 +63,16 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
               +"labelse\t EQU * \n"
               + l2
               +"labfin\t EQU *\n";
+    :}
+  | TK_WHILE expr:e1 TK_THEN linst:l1 TK_END
+    {:
+      RESULT = "labbefore\t EQU *\n"
+              + e1
+              +"\tBEZ\t labout\n"
+              + l1
+              +"\tPUSH\t labbefore\n"
+              +"\tGOTO\n"
+              +"labout\t EQU *\n";
     :}
 	;
 

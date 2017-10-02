@@ -33,5 +33,9 @@ if 0 then
 else
 	print 4321;
 end
-
-
+i:1;
+i=10;
+while i then
+	print i;
+	i =  i - 1;
+end
