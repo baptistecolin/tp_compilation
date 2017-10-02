@@ -10,6 +10,7 @@ ICNST = [0-9]+
 
 %%
 
+"+"		{ return new Symbol(sym.TK_PLUS);}
 "print"		{ return new Symbol(sym.TK_PRINT);}
 ";"		{ return new Symbol(sym.TK_SEP);}
 {ICNST}		{ return new Symbol(sym.TK_ICNST, new Integer(yytext())); }

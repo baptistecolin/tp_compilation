@@ -21,6 +21,7 @@ action code {:
 :}
 
 terminal TK_SEP, TK_PRINT;
+terminal TK_PLUS;
 terminal Integer TK_ICNST;
 
 non terminal target;
@@ -46,4 +47,10 @@ print ::= TK_PRINT expr:e
 	:}
 	;
 expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
-	;
+	| TK_ICNST:i1 TK_PLUS TK_ICNST:i2 
+    {: 
+      RESULT = "\tPUSH\t" + i1 + "\n"
+              +"\tPUSH\t" + i2 + "\n"
+              +"\tADD\t\n";
+    :}
+  ;
