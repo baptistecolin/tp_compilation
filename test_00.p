@@ -43,3 +43,5 @@ t[1]=5;
 print t[1];
 
 print _2;
+
+print 5%2;

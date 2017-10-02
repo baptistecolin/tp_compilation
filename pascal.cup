@@ -22,7 +22,7 @@ action code {:
 
 terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS;
-terminal TK_MULT, TK_DIV;
+terminal TK_MULT, TK_DIV, TK_MODULO;
 terminal TK_MOINS;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
@@ -34,7 +34,7 @@ non terminal String program, linst, inst, print, assign, declaration, expr;
 
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
-precedence left TK_MULT, TK_DIV;
+precedence left TK_MULT, TK_DIV, TK_MODULO;
 precedence left TK_BRALEF, TK_CROCHOP;
 precedence right TK_BRARIG, TK_CROCHCL;
 
@@ -155,6 +155,14 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
     {:
       RESULT = "\tPUSH\t0\n"
               + e
+              +"\tSUB\t\n";
+    :}
+  | expr:e1 TK_MODULO expr:e2
+    {:
+      // a%b = a - (a/b)*b
+      RESULT = e1 + e2 + e1 + e2
+              +"\tDIV\t\n"
+              +"\tMUL\t\n"
               +"\tSUB\t\n";
     :}
   ;
