@@ -2,3 +2,8 @@ print 3;
 ;
 print 4;
 print 1+2;
+print 1+2+3;
+print 2-1;
+print 6-2-1;
+print 6-2+1;
+print 6+2-1;
