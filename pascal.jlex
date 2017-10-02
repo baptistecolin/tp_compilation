@@ -18,12 +18,15 @@ ICNST = [0-9]+
 "+"		{ return new Symbol(sym.TK_PLUS);}
 "-"		{ return new Symbol(sym.TK_MINUS);}
 "*"		{ return new Symbol(sym.TK_MULT);}
+"="		{ return new Symbol(sym.TK_ASSIGN);}
 "/"		{ return new Symbol(sym.TK_DIV);}
+":"		{ return new Symbol(sym.TK_DECLARE);}
 "print"		{ return new Symbol(sym.TK_PRINT);}
 ";"		{ return new Symbol(sym.TK_SEP);}
 "#"		{ yybegin(COMMENT);}
 "/*"	{ yybegin(COMMENTZONE);}
 {ICNST}		{ return new Symbol(sym.TK_ICNST, new Integer(yytext())); }
+[a-zA-Z]	{ return new Symbol(sym.TK_VAR, new String(yytext())); }
 [\ \t\n\r\f]	{ }
 .		{ System.err.println("unexpected char '" + yytext() +
 				     "' line " + yyline);

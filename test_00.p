@@ -19,3 +19,9 @@ print 5; /* commentaire
 commentaire2
 commentaire3
 commentaire 4*/ print 6;
+a:1;
+a=2;
+print a;
+print a+3;
+a = a+1;
+print a;
