@@ -27,6 +27,7 @@ terminal TK_MULT, TK_DIV, TK_MODULO, TK_AND;
 terminal TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
+terminal TK_EXIT;
 terminal Integer TK_ICNST, TK_INPUT, TK_TRUE, TK_FALSE;
 terminal String TK_VAR;
 
@@ -37,7 +38,7 @@ precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV, TK_MODULO, TK_AND, TK_OR;
 precedence left TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
-precedence left TK_BRALEF, TK_CROCHOP;
+precedence left TK_BRALEF, TK_CROCHOP, TK_EXIT;
 precedence right TK_BRARIG, TK_CROCHCL;
 
 start with target;
@@ -84,6 +85,12 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
               +make_inst("","PUSH",labbefore)
               +make_inst("","GOTO","")
               +make_inst(labout,"EQU","*");
+    :}
+  | TK_EXIT TK_BRALEF expr:e TK_BRARIG
+    {:
+      String comment = make_comm("exitting ...");
+      RESULT = e
+              +make_inst("","STOP","");
     :}
 	;
 

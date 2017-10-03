@@ -15,6 +15,7 @@ while i then
 	i =  i - 1;
 end
 
+exit(3);
 t:2;
 t[1]=5;
 print t[1];
