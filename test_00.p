@@ -19,6 +19,7 @@ t:2;
 t[1]=5;
 print t[1];
 
-print 3>=2;
-print 3>=3;
-print 3>=4;
+print true and true;
+print false and true;
+print true and false;
+print false and false;
