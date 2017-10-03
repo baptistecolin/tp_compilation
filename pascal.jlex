@@ -53,7 +53,7 @@ ICNST = [0-9]+
 "#"		{ yybegin(COMMENT);}
 "/*"	{ yybegin(COMMENTZONE);}
 {ICNST}		{ return new Symbol(sym.TK_ICNST, new Integer(yytext())); }
-[a-zA-Z]	{ return new Symbol(sym.TK_VAR, new String(yytext())); }
+[a-zA-Z]*	{ return new Symbol(sym.TK_VAR, new String(yytext())); }
 [\ \t\n\r\f]	{ }
 .		{ System.err.println("unexpected char '" + yytext() +
 				     "' line " + yyline);
