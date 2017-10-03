@@ -21,3 +21,6 @@ print t[1];
 
 print not true;
 print not false;
+
+a:1=6;
+print a;

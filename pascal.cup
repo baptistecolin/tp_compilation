@@ -95,9 +95,20 @@ print ::= TK_PRINT expr:e
 	;
 
 declaration ::= TK_VAR:x TK_DECLARE TK_ICNST:i
-  {:
-    RESULT = x + "\tDS\t" + i + "\n";
-  :}
+    {:
+      RESULT = x + "\tDS\t" + i + "\n";
+    :}
+  | TK_VAR:x TK_DECLARE TK_ICNST:i TK_ASSIGN expr:e1
+    {:
+      String comment1 = make_comm("declaring...");
+      String comment2 = make_comm("assigning...");
+      RESULT = comment1
+              +make_inst(x,"DS",""+i)
+              +comment2
+              +make_inst("","PUSH",x)
+              +e1
+              +make_inst("","STORE","");
+    :}
   ;
 
 assign ::= TK_VAR:x TK_ASSIGN expr:e1
