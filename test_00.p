@@ -15,13 +15,14 @@ while i then
 	i =  i - 1;
 end
 
-exit(3);
 t:2;
 t[1]=5;
 print t[1];
 
-print not true;
-print not false;
+func f = {
+	print 1;
+	print 2;
+	print 3;
+};
 
-a:1=6;
-print a;
+f();

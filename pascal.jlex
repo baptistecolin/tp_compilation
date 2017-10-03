@@ -17,6 +17,8 @@ ICNST = [0-9]+
 ")"		{ return new Symbol(sym.TK_BRARIG);}
 "["		{ return new Symbol(sym.TK_CROCHOP);}
 "]"		{ return new Symbol(sym.TK_CROCHCL);}
+"{"		{ return new Symbol(sym.TK_CURLOP);}
+"}"		{ return new Symbol(sym.TK_CURLCL);}
 "and"	{ return new Symbol(sym.TK_AND);}
 "or"	{ return new Symbol(sym.TK_OR);}
 "not"	{ return new Symbol(sym.TK_NOT);}
@@ -35,6 +37,7 @@ ICNST = [0-9]+
 ":"		{ return new Symbol(sym.TK_DECLARE);}
 "?"		{ return new Symbol(sym.TK_INPUT);}
 "_"		{ return new Symbol(sym.TK_MOINS);}
+"func"		{ return new Symbol(sym.TK_FUNC);}
 "exit"		{ return new Symbol(sym.TK_EXIT);}
 "true"		{ return new Symbol(sym.TK_TRUE);}
 "false"		{ return new Symbol(sym.TK_FALSE);}

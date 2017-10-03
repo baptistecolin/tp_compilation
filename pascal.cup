@@ -25,9 +25,9 @@ terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS, TK_OR;
 terminal TK_MULT, TK_DIV, TK_MODULO, TK_AND;
 terminal TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
-terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
+terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL, TK_CURLOP, TK_CURLCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
-terminal TK_EXIT;
+terminal TK_EXIT, TK_FUNC;
 terminal Integer TK_ICNST, TK_INPUT, TK_TRUE, TK_FALSE;
 terminal String TK_VAR;
 
@@ -38,8 +38,8 @@ precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV, TK_MODULO, TK_AND, TK_OR;
 precedence left TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
-precedence left TK_BRALEF, TK_CROCHOP, TK_EXIT;
-precedence right TK_BRARIG, TK_CROCHCL;
+precedence left TK_BRALEF, TK_CROCHOP, TK_CURLOP, TK_EXIT, TK_FUNC;
+precedence right TK_BRARIG, TK_CROCHCL, TK_CURLCL;
 
 start with target;
 
@@ -91,6 +91,25 @@ inst  ::= print:i TK_SEP {: RESULT = i; :}
       String comment = make_comm("exitting ...");
       RESULT = e
               +make_inst("","STOP","");
+    :}
+  | TK_FUNC TK_VAR:f TK_ASSIGN TK_CURLOP linst:l TK_CURLCL
+  {:
+    String funclab = new String("begin_"+f);
+    String funclab_exit = new String("exit_"+f);
+
+    RESULT = make_inst(funclab,"EQU","*") // on met un repère
+            +l                            // en dessous duquel on stocke le code
+            +make_inst("","PUSH",funclab_exit)    // et on retourne où on était
+            +make_inst("","GOTO","");     // sans l'avoir exécuté
+  :}
+  | TK_VAR:f TK_BRALEF TK_BRARIG
+    {:
+      String funclab = new String("begin_"+f);
+      String funclab_exit = new String("exit_"+f);
+      
+      RESULT = make_inst("","PUSH",funclab)
+              +make_inst("","GOTO","")
+              +make_inst(funclab_exit,"EQU","*");
     :}
 	;
 
