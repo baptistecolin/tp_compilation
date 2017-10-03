@@ -230,6 +230,38 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
               +make_inst("","PUSH","1")
               +make_inst(labFin,"EQU","*");
     :}
+  | expr:e1 TK_INFEQ expr:e2
+    {:
+      String greaterThanZero = new String("greaterThanZero" + labelCount);
+      String zero = new String("zero" + labelCount);
+      String labfinBGZ = new String("labfinBGZ" + labelCount);
+      String labfinBEZ = new String("labfinBEZ" + labelCount);
+      labelCount++;
+
+      RESULT = e2
+              +e1
+              +make_inst("","SUB","")
+              +make_inst("","BGZ",greaterThanZero)
+              // dans le cas où e2>e1 est faux, on teste e2==e1
+                +e2
+                +e1
+                +make_inst("","SUB","")
+                +make_inst("","BEZ",zero)
+                  // dans le cas où e2==e1 est faux, on renvoie 0 
+                  +make_inst("","PUSH","0")
+                  +make_inst("","PUSH",labfinBEZ)
+                  +make_inst("","GOTO","")
+                +make_inst(zero,"EQU","*")
+                  // dans le cas où e2==e1 est vrai, on renvoie 1
+                  +make_inst("","PUSH","1")
+                  +make_inst(labfinBEZ,"EQU","*")
+                  +make_inst("","PUSH",labfinBGZ)
+                  +make_inst("","GOTO","")
+              // dans le cas où e2>e1 est vrai, on renvoie 1
+              +make_inst(greaterThanZero,"EQU","*")
+              +make_inst("","PUSH","1")
+              +make_inst(labfinBGZ,"EQU","*");
+    :}
   | expr:e1 TK_SUP expr:e2
     {:
       String lowerThanZero = new String("lowerThanZero" + labelCount);
