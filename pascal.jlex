@@ -19,6 +19,7 @@ ICNST = [0-9]+
 "]"		{ return new Symbol(sym.TK_CROCHCL);}
 "and"	{ return new Symbol(sym.TK_AND);}
 "or"	{ return new Symbol(sym.TK_OR);}
+"not"	{ return new Symbol(sym.TK_NOT);}
 "=="	{ return new Symbol(sym.TK_EQ);}
 ">="	{ return new Symbol(sym.TK_SUPEQ);}
 ">"		{ return new Symbol(sym.TK_SUP);}

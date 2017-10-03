@@ -19,7 +19,5 @@ t:2;
 t[1]=5;
 print t[1];
 
-print true or true;
-print false or true;
-print true or false;
-print false or false;
+print not true;
+print not false;

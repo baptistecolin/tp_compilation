@@ -24,7 +24,7 @@ action code {:
 terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
 terminal TK_PLUS, TK_MINUS, TK_OR;
 terminal TK_MULT, TK_DIV, TK_MODULO, TK_AND;
-terminal TK_MOINS, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
+terminal TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
 terminal Integer TK_ICNST, TK_INPUT, TK_TRUE, TK_FALSE;
@@ -36,7 +36,7 @@ non terminal String program, linst, inst, print, assign, declaration, expr;
 precedence left TK_SEP, TK_PRINT;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV, TK_MODULO, TK_AND, TK_OR;
-precedence left TK_MOINS, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
+precedence left TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 precedence left TK_BRALEF, TK_CROCHOP;
 precedence right TK_BRARIG, TK_CROCHCL;
 
@@ -315,4 +315,24 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
     {: RESULT = e2 + e1 + make_inst("","AND",""); :}
   | expr:e1 TK_OR expr:e2
     {: RESULT = e2 + e1 + make_inst("","OR",""); :}
+  | TK_NOT expr:e1
+    {:
+      String zero = new String("zero"+labelCount);
+      String labfin = new String("labfin"+labelCount);
+      labelCount++;
+      // si e1==0, on renvoie 1
+      // sinon, on renvoie 0
+      RESULT = e1
+              +make_inst("","BEZ",zero)
+                // si e1 est différent de 0
+                +make_inst("","PUSH","0")
+                +make_inst("","PUSH",labfin)
+                +make_inst("","GOTO","")
+              +make_inst(zero,"EQU","*")
+                // si e1 est égale à 0
+                +make_inst("","PUSH","1")
+                +make_inst("","PUSH",labfin)
+                +make_inst("","GOTO","")
+              +make_inst(labfin,"EQU","*");
+    :}
   ;
