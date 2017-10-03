@@ -27,3 +27,8 @@ func f = {
 };
 
 print f();
+
+a:1, b:1, c:1, d:1=3;
+print d;
+a=4;
+print 4;

@@ -21,7 +21,7 @@ action code {:
   }
 :}
 
-terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE;
+terminal TK_SEP, TK_PRINT, TK_ASSIGN, TK_DECLARE, TK_COMMA;
 terminal TK_PLUS, TK_MINUS, TK_OR;
 terminal TK_MULT, TK_DIV, TK_MODULO, TK_AND;
 terminal TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
@@ -32,9 +32,9 @@ terminal Integer TK_ICNST, TK_INPUT, TK_TRUE, TK_FALSE;
 terminal String TK_VAR;
 
 non terminal target;
-non terminal String program, linst, inst, print, assign, declaration, expr;
+non terminal String program, linst, inst, print, assign, declaration, declarations, expr;
 
-precedence left TK_SEP, TK_PRINT;
+precedence left TK_SEP, TK_PRINT, TK_COMMA;
 precedence left TK_PLUS, TK_MINUS;
 precedence left TK_MULT, TK_DIV, TK_MODULO, TK_AND, TK_OR;
 precedence left TK_MOINS, TK_NOT, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
@@ -55,7 +55,7 @@ linst ::= inst:i {: RESULT = i; :}
 
 inst  ::= print:i TK_SEP {: RESULT = i; :}
 	| TK_SEP {: RESULT = ""; :}
-  | declaration:i {: RESULT = i; :}
+  | declarations:i {: RESULT = i; :}
   | assign:i {: RESULT = i; :}
   | TK_IF expr:e1 TK_THEN linst:l1 TK_ELSE linst:l2 TK_END
     {:
@@ -123,6 +123,16 @@ print ::= TK_PRINT expr:e
 	   RESULT = comment + e + "\tOUT\n";
 	:}
 	;
+
+declarations ::= declaration:d TK_COMMA declarations:ds
+    {:
+      RESULT = d + ds;
+    :}
+  | declaration:d
+    {:
+      RESULT = d;
+    :}
+  ;
 
 declaration ::= TK_VAR:x TK_DECLARE TK_ICNST:i
     {:
