@@ -18,3 +18,7 @@ end
 t:2;
 t[1]=5;
 print t[1];
+
+print 3>=2;
+print 3>=3;
+print 3>=4;
