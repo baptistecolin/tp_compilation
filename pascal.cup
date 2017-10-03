@@ -27,7 +27,7 @@ terminal TK_MULT, TK_DIV, TK_MODULO;
 terminal TK_MOINS, TK_EQ, TK_INEQ, TK_INF, TK_SUP, TK_SUPEQ, TK_INFEQ;
 terminal TK_BRALEF, TK_BRARIG, TK_CROCHOP, TK_CROCHCL;
 terminal TK_IF, TK_THEN, TK_ELSE, TK_END, TK_WHILE;
-terminal Integer TK_ICNST, TK_INPUT;
+terminal Integer TK_ICNST, TK_INPUT, TK_TRUE, TK_FALSE;
 terminal String TK_VAR;
 
 non terminal target;
@@ -175,6 +175,10 @@ expr ::= TK_ICNST:i {: RESULT = "\tPUSH\t" + i + "\n"; :}
               +make_inst("","MUL","")
               +make_inst("","SUB","");
     :}
+  | TK_TRUE
+    {: RESULT = make_inst("","PUSH","1"); :}
+  | TK_FALSE
+    {: RESULT = make_inst("","PUSH","0"); :}
   | expr:e1 TK_EQ expr:e2
     {:
       String nonzero = new String("nonzero" + labelCount);

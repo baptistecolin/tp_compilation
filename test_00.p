@@ -18,3 +18,6 @@ end
 t:2;
 t[1]=5;
 print t[1];
+
+print true;
+print false;

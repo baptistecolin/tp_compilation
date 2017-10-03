@@ -32,6 +32,8 @@ ICNST = [0-9]+
 ":"		{ return new Symbol(sym.TK_DECLARE);}
 "?"		{ return new Symbol(sym.TK_INPUT);}
 "_"		{ return new Symbol(sym.TK_MOINS);}
+"true"		{ return new Symbol(sym.TK_TRUE);}
+"false"		{ return new Symbol(sym.TK_FALSE);}
 "print"		{ return new Symbol(sym.TK_PRINT);}
 "if"		{ return new Symbol(sym.TK_IF);}
 "then"		{ return new Symbol(sym.TK_THEN);}
